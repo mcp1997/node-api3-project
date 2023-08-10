@@ -36,7 +36,7 @@ function validateUser(req, res, next) {
   // DO YOUR MAGIC
   console.log('validateUser middleware')
   const { name } = req.body
-  if(!name || Object.keys(req.body).length === 0) {
+  if(!name || Object.keys(name).length === 0) {
     res.status(400).json({
       message: "missing required name field"
     })
@@ -48,7 +48,14 @@ function validateUser(req, res, next) {
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
   console.log('validatePost middleware')
-  next()
+  const { text } = req.body
+  if(!text || Object.keys(text).length === 0) {
+    res.status(400).json({
+      message: "missing required text field"
+    })
+  } else {
+    next()
+  }
 }
 
 // do not forget to expose these functions to other modules
