@@ -22,20 +22,43 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
+  res.json(req.user)
 });
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
+  User.insert(req.body)
+    .then(user => {
+      res.status(201).json(user)
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "something went wrong",
+        err: err.message,
+        stack: err.stack
+      })
+    })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
+  User.update(req.params.id, req.body)
+    .then(user => {
+      res.json(user)
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "something went wrong",
+        err: err.message,
+        stack: err.stack
+      })
+    })
 });
 
 router.delete('/:id', (req, res) => {

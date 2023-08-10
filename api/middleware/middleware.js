@@ -20,6 +20,7 @@ function validateUserId(req, res, next) {
         })
       } else {
         req.user = user
+        next()
       }
     })
     .catch(err => {
@@ -29,13 +30,19 @@ function validateUserId(req, res, next) {
         stack: err.stack
       })
     })
-  next()
 }
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
   console.log('validateUser middleware')
-  next()
+  const { name } = req.body
+  if(!name || Object.keys(req.body).length === 0) {
+    res.status(400).json({
+      message: "missing required name field"
+    })
+  } else {
+    next()
+  }
 }
 
 function validatePost(req, res, next) {
