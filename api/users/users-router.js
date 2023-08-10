@@ -1,4 +1,6 @@
 const express = require('express');
+const User = require('./users-model')
+const Post = require('../posts/posts-model')
 
 // You will need `users-model.js` and `posts-model.js` both
 // The middleware functions also need to be required
